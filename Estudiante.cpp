@@ -59,3 +59,12 @@ void Estudiante::devolverLibro(int idLibro) {
         std::cout << "No se encontró el préstamo con ese ID." << std::endl;
     }
 }
+
+void Estudiante::mostrarPerfil() const {
+    std::cout << "=== Perfil de Estudiante ===\n";
+    std::cout << "Nombre: " << nombre << "\n";
+    std::cout << "Email: " << email << "\n";
+    std::cout << "Fecha de registro: " << fechaRegistro << "\n";
+    std::cout << "Matrícula: " << matricula << "\n";
+    std::cout << "Préstamos activos: " << cantidadPrestamos << "\n";
+}

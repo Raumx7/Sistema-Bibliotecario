@@ -24,10 +24,3 @@ void Usuario::setFechaRegistro(const std::string &fr){
 std::string Usuario::getNombre() const {return nombre;}
 std::string Usuario::getEmail() const {return email;}
 std::string Usuario::getFechaRegistro() const {return fechaRegistro;}
-
-// Metodos de Usuario
-void Usuario::mostrarPerfil() const {
-    std::cout << "Nombre: " << nombre << std::endl
-                << "Email: " << email << std::endl
-                << "Fecha de registro: " << fechaRegistro << std::endl;
-}

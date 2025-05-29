@@ -6,7 +6,8 @@ private:
     int numeroEmp;
 public:
     // Constructor
-    Administrador(int noEmp = 0);
+    Administrador(const std::string &n = "N/A", const std::string &e = "N/A", 
+        const std::string &fr = "DD/MM/AAAA", int noEmp = 0);
     
     // Setters y Getters
     void setNumeroEmp(int);
@@ -19,4 +20,6 @@ public:
     void elmiminarUsuario() const;
     void consultarUsuarios() const;
     void consultarPrestamos() const;
+
+    void mostrarPerfil() const override;
 };

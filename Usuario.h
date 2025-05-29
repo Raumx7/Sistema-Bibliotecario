@@ -20,5 +20,6 @@ public:
     std::string getFechaRegistro() const;
 
     // Metodos de Usuario
-    void mostrarPerfil() const;
+    virtual void mostrarPerfil() const = 0;
+    virtual ~Usuario() = default;
 };

@@ -20,4 +20,6 @@ public:
     // Métodos de estudiante para solicitar préstamos y devolver
     void solicitarPrestamo(int idLibro);
     void devolverLibro(int idLibro);
+
+    void mostrarPerfil() const override;
 };
