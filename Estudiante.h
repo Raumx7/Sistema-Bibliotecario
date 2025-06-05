@@ -1,11 +1,12 @@
+// Estudiante.h
 #pragma once
 #include "Usuario.h"
-#include "Prestamo.h"
+#include "Catalogo.h"
 
 class Estudiante : public Usuario {
 private:
     std::string matricula;
-    Prestamo prestamos[5];
+    std::string prestamos[5];
     int cantidadPrestamos;
 public:
     // Constructor
@@ -18,8 +19,8 @@ public:
     int getCantidadPrestamos() const;
 
     // Métodos de estudiante para solicitar préstamos y devolver
-    void solicitarPrestamo(int idLibro);
-    void devolverLibro(int idLibro);
+    void registrarPrestamo(const std::string&, Catalogo&);
+    void removerPrestamo(const std::string&, Catalogo&);
 
     void mostrarPerfil() const override;
 };

@@ -1,27 +1,25 @@
-// Estudiante.cpp
-#include "Estudiante.h"
+// Profesor.cpp
 #include <iostream>
-#include <regex>
+#include "Profesor.h"
 
-// Constructor
-Estudiante::Estudiante(const std::string &n, const std::string &e,
-                       const std::string &fr, const std::string &mat)
-    : Usuario(n, e, fr), cantidadPrestamos{0}{
-    setMatricula(mat);
+#include "Profesor.h"
+#include <iostream>
+
+Profesor::Profesor(const std::string &n, const std::string &e,
+                   const std::string &fr, int numEmp)
+    : Usuario(n, e, fr), numeroEmpleado(numEmp), cantidadPrestamos(0) {}
+
+void Profesor::setNumeroEmpleado(int numEmp) {
+    numeroEmpleado = numEmp;
 }
 
-// Setters y Getters
-void Estudiante::setMatricula(const std::string &mat) {
-    static const std::regex formato("^Al\\d{4}$"); // "Al" seguido de 4 dígitos
-    matricula = (std::regex_match(mat, formato))? mat : std::string{"Al0000"};
-}
+int Profesor::getNumeroEmpleado() const {return numeroEmpleado;}
 
-std::string Estudiante::getMatricula() const {return matricula;}
-int Estudiante::getCantidadPrestamos() const {return cantidadPrestamos;}
+int Profesor::getCantidadPrestamos() const {return cantidadPrestamos;}
 
 // Método para solicitar prestado un libro
-void Estudiante::registrarPrestamo(const std::string &isbn, Catalogo &cat) {
-    if (cantidadPrestamos >= 5) {
+void Profesor::registrarPrestamo(const std::string &isbn, Catalogo &cat) {
+    if (cantidadPrestamos >= 10) {
         std::cout << "No puedes solicitar mas prestamos. Limite alcanzado." << std::endl;
         return;
     }
@@ -33,7 +31,7 @@ void Estudiante::registrarPrestamo(const std::string &isbn, Catalogo &cat) {
 }
 
 // Método para devolver libro
-void Estudiante::removerPrestamo(const std::string &isbn, Catalogo &cat) {
+void Profesor::removerPrestamo(const std::string &isbn, Catalogo &cat) {
     if (cantidadPrestamos == 0) {
         std::cout << "No tienes libros en prestamo." << std::endl;
         return;
@@ -55,11 +53,11 @@ void Estudiante::removerPrestamo(const std::string &isbn, Catalogo &cat) {
         std::cout << "No se encontro el prestamo con ese ISBN." << std::endl;
 }
 
-void Estudiante::mostrarPerfil() const {
-    std::cout << "=== Perfil de Estudiante ===\n";
+void Profesor::mostrarPerfil() const {
+    std::cout << "=== Perfil de Profesor ===\n";
     std::cout << "Nombre: " << nombre << "\n";
     std::cout << "Email: " << email << "\n";
     std::cout << "Fecha de registro: " << fechaRegistro << "\n";
-    std::cout << "Matrícula: " << matricula << "\n";
+    std::cout << "Número de empleado: " << numeroEmpleado << "\n";
     std::cout << "Préstamos activos: " << cantidadPrestamos << "\n";
 }
