@@ -1,63 +1,92 @@
 // Profesor.cpp
-#include <iostream>
-#include "Profesor.h"
-
 #include "Profesor.h"
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
+// Constructor
 Profesor::Profesor(const std::string &n, const std::string &e,
                    const std::string &fr, int numEmp)
-    : Usuario(n, e, fr), numeroEmpleado(numEmp), cantidadPrestamos(0) {}
-
-void Profesor::setNumeroEmpleado(int numEmp) {
-    numeroEmpleado = numEmp;
+    : Usuario{n, e, fr}, cantidadPrestamos{0} {
+    setNumeroEmpleado(numEmp);
 }
 
-int Profesor::getNumeroEmpleado() const {return numeroEmpleado;}
+// Setters y Getters
+void Profesor::setNumeroEmpleado(int num) {
+    numeroEmpleado = (num > 0) ? num : 0;
+}
 
-int Profesor::getCantidadPrestamos() const {return cantidadPrestamos;}
+int Profesor::getNumeroEmpleado() const {
+    return numeroEmpleado;
+}
 
-// Método para solicitar prestado un libro
+int Profesor::getCantidadPrestamos() const {
+    return cantidadPrestamos;
+}
+
+std::string Profesor::getCategoria() const {
+    return "Profesor";
+}
+
+// Registrar préstamo
 void Profesor::registrarPrestamo(const std::string &isbn, Catalogo &cat) {
     if (cantidadPrestamos >= 10) {
-        std::cout << "No puedes solicitar mas prestamos. Limite alcanzado." << std::endl;
+        std::cout << "Límite de préstamos alcanzado para el profesor.\n";
         return;
     }
-    if(cat.marcarPrestado(isbn)){
-        std::string nuevoPrestamo{isbn};
-        prestamos[cantidadPrestamos++] = nuevoPrestamo;
-        std::cout << "Prestamo registrado con exito." << std::endl;
+    if (cat.marcarPrestado(isbn)) {
+        prestamos[cantidadPrestamos++] = isbn;
+        std::cout << "Préstamo registrado exitosamente.\n";
     }
 }
 
-// Método para devolver libro
+// Remover préstamo
 void Profesor::removerPrestamo(const std::string &isbn, Catalogo &cat) {
     if (cantidadPrestamos == 0) {
-        std::cout << "No tienes libros en prestamo." << std::endl;
+        std::cout << "No tiene préstamos activos.\n";
         return;
     }
 
-    if(cat.marcarDisponible(isbn)){
-        int pos;
-        for(int i = 0; i < cantidadPrestamos; ++i){
-            if(isbn == prestamos[i]){
-                pos = i;
-            }
+    int pos = -1;
+    for (int i = 0; i < cantidadPrestamos; ++i) {
+        if (prestamos[i] == isbn) {
+            pos = i;
+            break;
         }
-        for(int j = pos; j < cantidadPrestamos - 1; ++j){
+    }
+
+    if (cat.marcarDisponible(isbn) && pos != -1) {
+        for (int j = pos; j < cantidadPrestamos - 1; ++j) {
             prestamos[j] = prestamos[j + 1];
         }
-        std::cout << "Libro devuelto con exito" << std::endl;
-        return;
+        --cantidadPrestamos;
+        std::cout << "Libro devuelto correctamente.\n";
+    } else {
+        std::cout << "No se encontró ese préstamo.\n";
     }
-        std::cout << "No se encontro el prestamo con ese ISBN." << std::endl;
 }
 
-void Profesor::mostrarPerfil() const {
-    std::cout << "=== Perfil de Profesor ===\n";
-    std::cout << "Nombre: " << nombre << "\n";
-    std::cout << "Email: " << email << "\n";
-    std::cout << "Fecha de registro: " << fechaRegistro << "\n";
-    std::cout << "Número de empleado: " << numeroEmpleado << "\n";
-    std::cout << "Préstamos activos: " << cantidadPrestamos << "\n";
+// Perfil detallado
+std::string Profesor::mostrarPerfil() const {
+    std::ostringstream oss;
+    oss << "Nombre: " << nombre << "\n"
+        << "Email: " << email << "\n"
+        << "Fecha de registro: " << fechaRegistro << "\n"
+        << "Número de empleado: " << numeroEmpleado << "\n"
+        << "Cantidad de préstamos: " << cantidadPrestamos << "\n";
+    return oss.str();
+}
+
+// Perfil en formato tabla
+std::string Profesor::mostrarPerfil(int indice) const {
+    std::ostringstream oss;
+    oss << std::left
+        << std::setw(5)  << indice
+        << std::setw(25) << nombre
+        << std::setw(30) << email
+        << std::setw(15) << fechaRegistro
+        << std::setw(10) << numeroEmpleado
+        << std::setw(8)  << cantidadPrestamos
+        << std::setw(12) << getCategoria();
+    return oss.str();
 }

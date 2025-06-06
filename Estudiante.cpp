@@ -1,6 +1,8 @@
 // Estudiante.cpp
 #include "Estudiante.h"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <regex>
 
 // Constructor
@@ -35,31 +37,54 @@ void Estudiante::registrarPrestamo(const std::string &isbn, Catalogo &cat) {
 // Método para devolver libro
 void Estudiante::removerPrestamo(const std::string &isbn, Catalogo &cat) {
     if (cantidadPrestamos == 0) {
-        std::cout << "No tienes libros en prestamo." << std::endl;
+        std::cout << "No tienes libros en préstamo." << std::endl;
         return;
     }
 
-    if(cat.marcarDisponible(isbn)){
-        int pos;
-        for(int i = 0; i < cantidadPrestamos; ++i){
-            if(isbn == prestamos[i]){
-                pos = i;
-            }
+    int pos = -1;
+    for (int i = 0; i < cantidadPrestamos; ++i) {
+        if (prestamos[i] == isbn) {
+            pos = i;
+            break;
         }
-        for(int j = pos; j < cantidadPrestamos - 1; ++j){
+    }
+
+    if (pos != -1 && cat.marcarDisponible(isbn)) {
+        for (int j = pos; j < cantidadPrestamos - 1; ++j) {
             prestamos[j] = prestamos[j + 1];
         }
-        std::cout << "Libro devuelto con exito" << std::endl;
-        return;
+        --cantidadPrestamos;
+        std::cout << "Libro con ISBN: " << isbn << " devuelto con exito" << std::endl;
+    } else {
+        std::cout << "No se encontro el prestamo con ese ISBN o no tienes el libro en prestamo." << std::endl;
     }
-        std::cout << "No se encontro el prestamo con ese ISBN." << std::endl;
 }
 
-void Estudiante::mostrarPerfil() const {
-    std::cout << "=== Perfil de Estudiante ===\n";
-    std::cout << "Nombre: " << nombre << "\n";
-    std::cout << "Email: " << email << "\n";
-    std::cout << "Fecha de registro: " << fechaRegistro << "\n";
-    std::cout << "Matrícula: " << matricula << "\n";
-    std::cout << "Préstamos activos: " << cantidadPrestamos << "\n";
+std::string Estudiante::getCategoria() const {
+    return "Estudiante";
+}
+
+// Perfil detallado
+std::string Estudiante::mostrarPerfil() const {
+    std::ostringstream oss;
+    oss << "Nombre: " << nombre << "\n"
+        << "Email: " << email << "\n"
+        << "Fecha de registro: " << fechaRegistro << "\n"
+        << "Matricula: " << matricula << "\n"
+        << "Cantidad de prestamos: " << cantidadPrestamos << "\n";
+    return oss.str();
+}
+
+// Perfil en formato tabla
+std::string Estudiante::mostrarPerfil(int indice) const {
+    std::ostringstream oss;
+    oss << std::left
+        << std::setw(5)  << indice
+        << std::setw(25) << nombre
+        << std::setw(30) << email
+        << std::setw(15) << fechaRegistro
+        << std::setw(10) << matricula
+        << std::setw(8)  << cantidadPrestamos
+        << std::setw(12) << getCategoria();
+    return oss.str();
 }

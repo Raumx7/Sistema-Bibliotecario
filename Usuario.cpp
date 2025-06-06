@@ -4,7 +4,8 @@
 #include "Usuario.h"
 
 // Constructor default y con parámetros
-Usuario::Usuario(const std::string &n, const std::string &e, const std::string &fr) : nombre{n}, email{e}{
+Usuario::Usuario(const std::string &n, const std::string &e, const std::string &fr) : nombre{n}{
+    setEmail(e);
     setFechaRegistro(fr);
 }
 
@@ -14,7 +15,8 @@ void Usuario::setNombre(const std::string &n){
 }
 
 void Usuario::setEmail(const std::string &e){
-    email = e;
+    static const std::regex formato(R"(^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$)"); // Formato usuario@dominio.com
+    email = (std::regex_match(e, formato)) ? e : std::string{"usuario@dominio.com"};
 }
 
 void Usuario::setFechaRegistro(const std::string &fr){

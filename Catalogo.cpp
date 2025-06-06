@@ -16,7 +16,7 @@ Catalogo::Catalogo() : cantidad{0} {
     libros[cantidad++] = Libro("Fahrenheit 451", "Ray Bradbury", "9781451673319", true);
 }
 
-void imprimirEncabezado() {
+void imprimirEncabezadoLibros() {
     std::cout << std::left
               << std::setw(5) << "N°"
               << std::setw(35) << "Título"
@@ -48,7 +48,7 @@ bool Catalogo::marcarPrestado(const std::string &isbn){
 }
 
 void Catalogo::buscarPorTitulo(const std::string &tituloBuscado) const {
-    imprimirEncabezado();
+    imprimirEncabezadoLibros();
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
@@ -64,7 +64,7 @@ void Catalogo::buscarPorTitulo(const std::string &tituloBuscado) const {
 }
 
 void Catalogo::buscarPorAutor(const std::string& autorBuscado) const {
-    imprimirEncabezado();
+    imprimirEncabezadoLibros();
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
@@ -79,8 +79,25 @@ void Catalogo::buscarPorAutor(const std::string& autorBuscado) const {
         std::cout << "No se encontro ningun libro de ese autor.\n";
 }
 
+void Catalogo::buscarPorISBN(const std::string &isbn) const {
+    imprimirEncabezadoLibros();
+    bool encontrado = false;
+
+    for (int i = 0; i < cantidad; ++i) {
+        if (libros[i].getISBN() == isbn) {
+            std::cout << std::string{30,'-'};
+            std::cout << libros[i].mostrar();
+            encontrado = true;
+            break;
+        }
+    }
+
+    if (!encontrado)
+        std::cout << "No se encontro ningun libro con ISBN: " << isbn << std::endl;
+}
+
 void Catalogo::mostrarDisponibles() const {
-    imprimirEncabezado();
+    imprimirEncabezadoLibros();
     int index = 1;
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].estaDisponible()) {
@@ -90,7 +107,7 @@ void Catalogo::mostrarDisponibles() const {
 }
 
 void Catalogo::mostrarPrestados() const {
-    imprimirEncabezado();
+    imprimirEncabezadoLibros();
     int index = 1;
     for (int i = 0; i < cantidad; ++i) {
         if (!libros[i].estaDisponible()) {
@@ -100,7 +117,7 @@ void Catalogo::mostrarPrestados() const {
 }
 
 void Catalogo::mostrarCatalogo() const {
-    imprimirEncabezado();
+    imprimirEncabezadoLibros();
     for (int i = 0; i < cantidad; ++i) {
         std::cout << libros[i].mostrar(i + 1);
     }

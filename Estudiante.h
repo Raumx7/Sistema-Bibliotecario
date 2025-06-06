@@ -17,10 +17,12 @@ public:
     void setMatricula(const std::string&);
     std::string getMatricula() const;
     int getCantidadPrestamos() const;
+    std::string getCategoria() const override;
 
     // Métodos de estudiante para solicitar préstamos y devolver
-    void registrarPrestamo(const std::string&, Catalogo&);
-    void removerPrestamo(const std::string&, Catalogo&);
+    void registrarPrestamo(const std::string&, Catalogo&) override;
+    void removerPrestamo(const std::string&, Catalogo&) override;
 
-    void mostrarPerfil() const override;
+    std::string mostrarPerfil() const override;
+    std::string mostrarPerfil(int) const override;
 };

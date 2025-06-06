@@ -2,6 +2,8 @@
 #pragma once
 #include <string>
 
+class Catalogo;
+
 class Usuario {
 protected:
     std::string nombre;
@@ -19,8 +21,12 @@ public:
     std::string getNombre() const;
     std::string getEmail() const;
     std::string getFechaRegistro() const;
+    virtual std::string getCategoria() const = 0;
 
     // Metodos de Usuario
-    virtual void mostrarPerfil() const = 0;
+    virtual void registrarPrestamo(const std::string&, Catalogo&) = 0;
+    virtual void removerPrestamo(const std::string&, Catalogo&) = 0;
+    virtual std::string mostrarPerfil() const = 0;
+    virtual std::string mostrarPerfil(int) const = 0;
     virtual ~Usuario() = default;
 };

@@ -1,16 +1,28 @@
-#include "Usuario.h"
-#include "Estudiante.h"
-#include "Administrador.h"
+#include <iostream>
+#include "Biblioteca.h"
+using namespace std;
 
 int main() {
 
-    Usuario *usuario2 = new Estudiante("Luis", "luis@mail.com", "02/02/2024", "Al1234");
-    Usuario *usuario3 = new Administrador("Dr. Ramírez", "admin@uni.edu", "03/03/2022", 101);
+    Biblioteca biblioteca;
 
-    usuario2->mostrarPerfil();  // Estudiante
-    usuario3->mostrarPerfil();  // Administrador
+    // Creamos profesores
+    Usuario* u1 = new Profesor{"Juan Rodriguez","juan@edu.mx","23/01/2020",3400};
 
-    delete usuario2;
-    delete usuario3;
+    // Creamos estudiantes
+    Usuario* u2 = new Estudiante{"Raul Chavez","raul@gmail.com","05/06/25","Al0000"};
+    Usuario* u3 = new Estudiante{"Carlos Quintana","carlos@gmal.com","11/09/2019","Al2370"};
+
+    biblioteca.agregarUsuario(u1);
+    biblioteca.agregarUsuario(u2);
+    biblioteca.agregarUsuario(u3);
+
+    biblioteca.mostrarUsuarios();
+    biblioteca.mostrarCatalogo();
+
+    delete u1;
+    delete u2;
+    delete u3;
+
     return 0;
 }

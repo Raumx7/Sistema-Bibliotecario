@@ -15,9 +15,11 @@ public:
     void setNumeroEmpleado(int);
     int getNumeroEmpleado() const;
     int getCantidadPrestamos() const;
+    std::string getCategoria() const override;
 
-    void registrarPrestamo(const std::string&, Catalogo&);
-    void removerPrestamo(const std::string&, Catalogo&);
+    void registrarPrestamo(const std::string&, Catalogo&) override;
+    void removerPrestamo(const std::string&, Catalogo&) override;
 
-    void mostrarPerfil() const override;
+    std::string mostrarPerfil() const override;
+    std::string mostrarPerfil(int) const override;
 };

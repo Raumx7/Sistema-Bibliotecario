@@ -17,6 +17,7 @@ public:
 
     void buscarPorTitulo(const std::string&) const;
     void buscarPorAutor(const std::string&) const;
+    void buscarPorISBN(const std::string&) const;
     void mostrarCatalogo() const;
     void mostrarDisponibles() const;
     void mostrarPrestados() const;
