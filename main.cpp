@@ -20,9 +20,7 @@ int main() {
     biblioteca.mostrarUsuarios();
     biblioteca.mostrarCatalogo();
 
-    delete u1;
-    delete u2;
-    delete u3;
+    // No se requiere liberar memoria para u1, u2 ... el destructor de Biblioteca lo hace
 
     return 0;
 }
