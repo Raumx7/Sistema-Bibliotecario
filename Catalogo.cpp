@@ -1,4 +1,3 @@
-// Catalogo.cpp
 #include "Catalogo.h"
 #include <iostream>
 #include <iomanip>
@@ -8,7 +7,7 @@ Catalogo::Catalogo() : cantidad{0} {
     libros[cantidad++] = Libro("1984", "George Orwell", "9780451524935", true);
     libros[cantidad++] = Libro("Don Quijote de la Mancha", "Miguel de Cervantes", "9788491050260", true);
     libros[cantidad++] = Libro("Orgullo y prejuicio", "Jane Austen", "9780141439518", true);
-    libros[cantidad++] = Libro("Crónica de una muerte anunciada", "Gabriel Garcia Marquez", "9781400034710", true);
+    libros[cantidad++] = Libro("Cronica de una muerte anunciada", "Gabriel Garcia Marquez", "9781400034710", true);
     libros[cantidad++] = Libro("El Principito", "Antoine de Saint-Exupery", "9780156013987", true);
     libros[cantidad++] = Libro("Rayuela", "Julio Cortazar", "9788437603581", true);
     libros[cantidad++] = Libro("La sombra del viento", "Carlos Ruiz Zafon", "9780143126393", true);
@@ -16,39 +15,44 @@ Catalogo::Catalogo() : cantidad{0} {
     libros[cantidad++] = Libro("Fahrenheit 451", "Ray Bradbury", "9781451673319", true);
 }
 
-void imprimirEncabezadoLibros() {
+void Catalogo::imprimirEncabezado(bool disponibilidad) const {
     std::cout << std::left
-              << std::setw(5) << "N°"
-              << std::setw(35) << "Título"
-              << std::setw(25) << "Autor"
-              << std::setw(15) << "ISBN"
-              << std::setw(12) << "Disponible"
-              << "\n";
-    std::cout << std::string{92,'-'} << "\n";
+              << std::setw(6) << "N°"
+              << std::setw(44) << "Titulo"
+              << std::setw(30) << "Autor"
+              << std::setw(20) << "ISBN";
+
+    if (disponibilidad) {
+        std::cout << "Disponible";
+    }
+
+    std::cout << "\n";
+
+    int anchoTotal = 92 + (disponibilidad ? 17 : 0);
+    std::cout << std::string(anchoTotal, '-') << "\n";
 }
 
-bool Catalogo::marcarDisponible(const std::string &isbn){
+bool Catalogo::marcarDisponible(const std::string &isbn) {
     for (int i = 0; i < cantidad; ++i) {
-        if (libros[i].getISBN() == isbn) {
+        if (libros[i].getISBN() == isbn && !libros[i].estaDisponible()) {
             libros[i].marcarDisponible();
             return true;
         }
     }
-        return false;
+    return false;
 }
 
-bool Catalogo::marcarPrestado(const std::string &isbn){
+bool Catalogo::marcarPrestado(const std::string &isbn) {
     for (int i = 0; i < cantidad; ++i) {
-        if (libros[i].getISBN() == isbn) {
+        if (libros[i].getISBN() == isbn && libros[i].estaDisponible()) {
             libros[i].marcarPrestado();
             return true;
         }
     }
-        return false;
+    return false;
 }
 
 void Catalogo::buscarPorTitulo(const std::string &tituloBuscado) const {
-    imprimirEncabezadoLibros();
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
@@ -64,7 +68,6 @@ void Catalogo::buscarPorTitulo(const std::string &tituloBuscado) const {
 }
 
 void Catalogo::buscarPorAutor(const std::string& autorBuscado) const {
-    imprimirEncabezadoLibros();
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
@@ -80,7 +83,6 @@ void Catalogo::buscarPorAutor(const std::string& autorBuscado) const {
 }
 
 void Catalogo::buscarPorISBN(const std::string &isbn) const {
-    imprimirEncabezadoLibros();
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
@@ -96,30 +98,42 @@ void Catalogo::buscarPorISBN(const std::string &isbn) const {
         std::cout << "No se encontro ningun libro con ISBN: " << isbn << std::endl;
 }
 
+const Libro* Catalogo::buscarLibroPorISBN(const std::string& isbn) const {
+    for (int i = 0; i < cantidad; ++i) {
+        if (libros[i].getISBN() == isbn) {
+            return &libros[i];
+        }
+    }
+    return nullptr;
+}
+
 void Catalogo::mostrarDisponibles() const {
-    imprimirEncabezadoLibros();
+    std::cout << "\nLibros disponibles:\n\n";
+    imprimirEncabezado(false);
     int index = 1;
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].estaDisponible()) {
-            std::cout << libros[i].mostrar(index++);
+            std::cout << libros[i].mostrar(index++, false);
         }
     }
 }
 
 void Catalogo::mostrarPrestados() const {
-    imprimirEncabezadoLibros();
+    std::cout << "\nLibros en prestamo:\n\n";
+    imprimirEncabezado(false);
     int index = 1;
     for (int i = 0; i < cantidad; ++i) {
         if (!libros[i].estaDisponible()) {
-            std::cout << libros[i].mostrar(index++);
+            std::cout << libros[i].mostrar(index++, false);
         }
     }
 }
 
 void Catalogo::mostrarCatalogo() const {
-    imprimirEncabezadoLibros();
+    std::cout << "\nCatalogo:\n\n";
+    imprimirEncabezado(true);
     for (int i = 0; i < cantidad; ++i) {
-        std::cout << libros[i].mostrar(i + 1);
+        std::cout << libros[i].mostrar(i + 1, true);
     }
 }
 
@@ -131,17 +145,26 @@ void Catalogo::agregarLibro(const Libro& libro) {
     }
 }
 
-void Catalogo::eliminarLibro(int posicion) {
-    if (posicion < 1 || posicion > cantidad) {
-        std::cout << "Posicion invalida.\n";
+void Catalogo::eliminarLibroPorISBN(const std::string& isbn) {
+    int index = -1;
+
+    for (int i = 0; i < cantidad; ++i) {
+        if (libros[i].getISBN() == isbn) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) {
+        std::cout << "No se encontró ningún libro con ISBN: " << isbn << "\n";
         return;
     }
 
-    int index = posicion - 1;
     std::string tituloEliminado = libros[index].getTitulo();
+
     for (int i = index; i < cantidad - 1; ++i) {
         libros[i] = libros[i + 1];
     }
-    cantidad--;
-    std::cout << "El libro \"" << tituloEliminado << "\" se ha eliminado del catalogo" << std::endl;
+    --cantidad;
+    std::cout << "El libro \"" << tituloEliminado << "\" se ha eliminado del catálogo.\n";
 }

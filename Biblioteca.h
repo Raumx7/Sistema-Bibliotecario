@@ -10,17 +10,25 @@ private:
     Catalogo catalogo;
 
 public:
+    // Constructor y destructor
     Biblioteca();
     ~Biblioteca();
 
+    // Getters
+    Catalogo& getCatalogo();
+    int getCantidadUsuarios() const;
+
     // Gestión de usuarios
-    void agregarUsuario(Usuario* usuario);
+    void imprimirEncabezadoUsuarios(bool) const;
+    void agregarUsuario(Usuario*);
+    void eliminarUsuarioPorID(const std::string& id);
     void mostrarUsuarios() const;
     void mostrarEstudiantes() const;
     void mostrarProfesores() const;
-    Usuario* buscarUsuarioPorNombre(const std::string&) const;
+    Usuario* buscarUsuarioPorID(const std::string&) const;
 
     // Gestión de préstamos
+    void mostrarPrestamosUsuario(const std::string&, const Catalogo&) const;
     void prestarLibro(const std::string&, const std::string&, Catalogo&);
     void devolverLibro(const std::string&, const std::string&, Catalogo&);
 
@@ -32,5 +40,5 @@ public:
     void buscarLibroPorAutor(const std::string&) const;
     void buscarLibroPorISBN(const std::string&) const;
     void agregarLibro(const Libro&);
-    void eliminarLibro(int);
+    void eliminarLibroPorISBN(const std::string&);
 };

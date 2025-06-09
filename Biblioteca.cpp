@@ -2,33 +2,52 @@
 #include <iostream>
 #include <iomanip>
 
-Biblioteca::Biblioteca() : cantidadUsuarios{0} {}
+// Constructor
+Biblioteca::Biblioteca() : cantidadUsuarios{0} {
+    // Estudiantes
+    usuarios[cantidadUsuarios++] = new Estudiante("Ana López", "ana@correo.com", "12/03/2022", "Al1001");
+    usuarios[cantidadUsuarios++] = new Estudiante("Luis Pérez", "luis@correo.com", "15/04/2022", "Al1002");
+    usuarios[cantidadUsuarios++] = new Estudiante("Marta Gómez", "marta@correo.com", "18/05/2022", "Al1003");
+    usuarios[cantidadUsuarios++] = new Estudiante("Pedro Sánchez", "pedro@correo.com", "20/06/2022", "Al1004");
+    usuarios[cantidadUsuarios++] = new Estudiante("Lucía Torres", "lucia@correo.com", "22/07/2022", "Al1005");
 
+    // Profesores
+    usuarios[cantidadUsuarios++] = new Profesor("Javier Morales", "javier@edu.mx", "10/01/2020", "PR2001");
+    usuarios[cantidadUsuarios++] = new Profesor("Carmen Ruiz", "carmen@edu.mx", "14/02/2020", "PR2002");
+}
+
+// Destructor, libera la memoria para cada usuario creado
 Biblioteca::~Biblioteca() {
     for (int i = 0; i < cantidadUsuarios; ++i) {
         delete usuarios[i];
     }
 }
 
-void encabezadoUsuarios(){
+// Imprime el encabezado con opción de mostrar la categoría de los usuarios (profesor o estudiante)
+void Biblioteca::imprimirEncabezadoUsuarios(bool mostrarCategoria) const {
     std::cout << std::left
-              << std::setw(5)  << "N°"
-              << std::setw(30) << "Nombre"
+              << std::setw(6)  << "N°"
+              << std::setw(25) << "Nombre"
               << std::setw(30) << "Email"
-              << std::setw(15) << "Categoria"
-              << "\n";
-    std::cout << std::string(80, '-') << "\n";
+              << std::setw(15) << "Registro"
+              << std::setw(10) << "ID"
+              << std::setw(14) << "Prestamos";
+
+    if (mostrarCategoria) {
+        std::cout << "Categoria";
+    }
+
+    std::cout << "\n";
+
+    int ancho = 94 + (mostrarCategoria ? 15 : 0);
+    std::cout << std::string(ancho, '-') << "\n";
 }
 
-void imprimirEncabezadoUsuarios(){
-    std::cout << std::left
-    << std::setw(5)  << "N°"
-    << std::setw(30) << "Nombre"
-    << std::setw(30) << "Email"
-    << "\n";
-std::cout << std::string(65, '-') << "\n";
-}
+// Getters
+Catalogo& Biblioteca::getCatalogo(){return catalogo;}
+int Biblioteca::getCantidadUsuarios() const {return cantidadUsuarios;}
 
+// Método para agregar usuarios
 void Biblioteca::agregarUsuario(Usuario* usuario) {
     if (cantidadUsuarios < 1000) {
         usuarios[cantidadUsuarios++] = usuario;
@@ -38,100 +57,151 @@ void Biblioteca::agregarUsuario(Usuario* usuario) {
     }
 }
 
+// Método para eliminar usuarios
+void Biblioteca::eliminarUsuarioPorID(const std::string& id) {
+    for (int i = 0; i < cantidadUsuarios; ++i) {
+        if (usuarios[i]->getID() == id) {
+            if (usuarios[i]->getCantidad() > 0) {
+                std::cout << "No se puede eliminar al usuario con ID '" << id 
+                          << "' porque tiene libros en prestamo.\n";
+                return;
+            }
+            delete usuarios[i];
+            for (int j = i; j < cantidadUsuarios - 1; ++j) {
+                usuarios[j] = usuarios[j + 1];
+            }
+            --cantidadUsuarios;
+            std::cout << "Usuario con ID '" << id << "' eliminado exitosamente.\n";
+            return;
+        }
+    }
+    std::cout << "No se encontro ningun usuario con ID: '" << id << "'.\n";
+}
+
+// Muestra usuarios (profesores y estudiantes)
 void Biblioteca::mostrarUsuarios() const {
-    std::cout << "Usuarios:\n";
-    encabezadoUsuarios();
+    std::cout << "Usuarios:\n\n";
+    imprimirEncabezadoUsuarios(true);
     for (int i = 0; i < cantidadUsuarios; ++i) {
         std::cout << usuarios[i]->mostrarPerfil(i + 1) << "\n";
     }
 }
 
+// Muestra perfil de estudiantes
 void Biblioteca::mostrarEstudiantes() const {
-    std::cout << "\nEstudiantes:\n";
-    imprimirEncabezadoUsuarios();
+    std::cout << "\nEstudiantes:\n\n";
+    imprimirEncabezadoUsuarios(false);
     int index = 1;
     for (int i = 0; i < cantidadUsuarios; ++i) {
         if (usuarios[i]->getCategoria() == "Estudiante") {
             std::cout << std::left
                       << std::setw(5)  << index++
-                      << std::setw(30) << usuarios[i]->getNombre()
+                      << std::setw(25) << usuarios[i]->getNombre()
                       << std::setw(30) << usuarios[i]->getEmail()
+                      << std::setw(15) << usuarios[i]->getFechaRegistro()
+                      << std::setw(14) << usuarios[i]->getID()
+                      << std::setw(10) << usuarios[i]->getCantidad()
                       << "\n";
         }
     }
 }
 
+// Muestra perfil de profesores
 void Biblioteca::mostrarProfesores() const {
-    std::cout << "\nProfesores:\n";
-    imprimirEncabezadoUsuarios();
+    std::cout << "\nProfesores:\n\n";
+    imprimirEncabezadoUsuarios(false);
     int index = 1;
     for (int i = 0; i < cantidadUsuarios; ++i) {
         if (usuarios[i]->getCategoria() == "Profesor") {
             std::cout << std::left
                       << std::setw(5)  << index++
-                      << std::setw(30) << usuarios[i]->getNombre()
+                      << std::setw(25) << usuarios[i]->getNombre()
                       << std::setw(30) << usuarios[i]->getEmail()
+                      << std::setw(15) << usuarios[i]->getFechaRegistro()
+                      << std::setw(14) << usuarios[i]->getID()
+                      << std::setw(10) << usuarios[i]->getCantidad()
                       << "\n";
         }
     }
 }
 
-Usuario* Biblioteca::buscarUsuarioPorNombre(const std::string& nombre) const {
+// Método para buscar un usuario por su id (matrícula o no. empleado)
+Usuario* Biblioteca::buscarUsuarioPorID(const std::string& id) const {
     for (int i = 0; i < cantidadUsuarios; ++i) {
-        if (usuarios[i]->getNombre() == nombre) {
+        if (usuarios[i]->getID() == id) {
             return usuarios[i];
         }
     }
     return nullptr;
 }
 
-void Biblioteca::prestarLibro(const std::string& nombreUsuario, const std::string& isbn, Catalogo &cat) {
-    Usuario* usuario = buscarUsuarioPorNombre(nombreUsuario);
+// Método para ver los préstamos de un usuario
+void Biblioteca::mostrarPrestamosUsuario(const std::string &idUsuario, const Catalogo &cat) const {
+    Usuario* usuario = buscarUsuarioPorID(idUsuario);
+    
+    if (!usuario) {
+        std::cout << "Usuario con ID '" << idUsuario << "' no encontrado.\n";
+        return;
+    }
+    usuario->mostrarPrestamos(cat);
+}
+
+// Método para registrar préstamos
+void Biblioteca::prestarLibro(const std::string& idUsuario, const std::string& isbn, Catalogo &cat) {
+    Usuario* usuario = buscarUsuarioPorID(idUsuario);
     if (!usuario) {
         std::cout << "Usuario no encontrado.\n";
         return;
     }
-    usuario->registrarPrestamo(isbn,cat);
+    usuario->registrarPrestamo(isbn, cat);
 }
 
-void Biblioteca::devolverLibro(const std::string& nombreUsuario, const std::string& isbn, Catalogo &cat){
-    Usuario* usuario = buscarUsuarioPorNombre(nombreUsuario);
+// Método para registrar devoluciones
+void Biblioteca::devolverLibro(const std::string& idUsuario, const std::string& isbn, Catalogo &cat) {
+    Usuario* usuario = buscarUsuarioPorID(idUsuario);
     if (!usuario) {
         std::cout << "Usuario no encontrado.\n";
         return;
     }
-    usuario->removerPrestamo(isbn,cat);
+    usuario->removerPrestamo(isbn, cat);
 }
 
-// Métodos del catálogo
+// Método que muestra el catálogo completo
 void Biblioteca::mostrarCatalogo() const {
     catalogo.mostrarCatalogo();
 }
 
+// Método que muestra sólo los libros disponibles
 void Biblioteca::mostrarDisponibles() const {
     catalogo.mostrarDisponibles();
 }
 
+// Método que muestra los libros en préstamo
 void Biblioteca::mostrarPrestados() const {
     catalogo.mostrarPrestados();
 }
 
+// Método que busca un libro por su titulo
 void Biblioteca::buscarLibroPorTitulo(const std::string &titulo) const {
     catalogo.buscarPorTitulo(titulo);
 }
 
+// Método que busca un libro por su autor
 void Biblioteca::buscarLibroPorAutor(const std::string &autor) const {
     catalogo.buscarPorAutor(autor);
 }
 
+// Método que busca un libro por su ISBN
 void Biblioteca::buscarLibroPorISBN(const std::string &isbn) const {
     catalogo.buscarPorISBN(isbn);
 }
 
+// Método para agregar libro 
 void Biblioteca::agregarLibro(const Libro &libro) {
     catalogo.agregarLibro(libro);
 }
 
-void Biblioteca::eliminarLibro(int posicion) {
-    catalogo.eliminarLibro(posicion);
+// Método para eliminar libro por posición (1-n)
+void Biblioteca::eliminarLibroPorISBN(const std::string &isbn) {
+    catalogo.eliminarLibroPorISBN(isbn);
 }

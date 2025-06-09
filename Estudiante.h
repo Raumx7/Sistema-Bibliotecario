@@ -17,12 +17,18 @@ public:
     void setMatricula(const std::string&);
     std::string getMatricula() const;
     int getCantidadPrestamos() const;
+    std::string getID() const override;
     std::string getCategoria() const override;
+    int getCantidad() const override;
+    
 
     // Métodos de estudiante para solicitar préstamos y devolver
+    void mostrarPrestamos(const Catalogo&) const override;
+    bool yaTienePrestado(const std::string&) const;
     void registrarPrestamo(const std::string&, Catalogo&) override;
     void removerPrestamo(const std::string&, Catalogo&) override;
 
+    // Métodos para mostrar perfil de estudiante
     std::string mostrarPerfil() const override;
     std::string mostrarPerfil(int) const override;
 };

@@ -21,9 +21,12 @@ public:
     std::string getNombre() const;
     std::string getEmail() const;
     std::string getFechaRegistro() const;
+    virtual std::string getID() const = 0;
     virtual std::string getCategoria() const = 0;
+    virtual int getCantidad() const = 0;
 
     // Metodos de Usuario
+    virtual void mostrarPrestamos(const Catalogo&) const = 0;
     virtual void registrarPrestamo(const std::string&, Catalogo&) = 0;
     virtual void removerPrestamo(const std::string&, Catalogo&) = 0;
     virtual std::string mostrarPerfil() const = 0;

@@ -1,4 +1,3 @@
-// Libro.h
 #pragma once
 #include <iostream>
 #include <string>
@@ -32,5 +31,5 @@ public:
 
     // Metodos de Libro
     std::string mostrar() const;
-    std::string mostrar(int indice) const;
+    std::string mostrar(int, bool) const;
 };

@@ -1,4 +1,3 @@
-// Catalogo.h
 #pragma once
 #include <iostream>
 #include "Libro.h"
@@ -15,12 +14,14 @@ public:
     bool marcarDisponible(const std::string&);
     bool marcarPrestado(const std::string&);
 
+    void imprimirEncabezado(bool) const;
     void buscarPorTitulo(const std::string&) const;
     void buscarPorAutor(const std::string&) const;
     void buscarPorISBN(const std::string&) const;
+    const Libro* buscarLibroPorISBN(const std::string& isbn) const;
     void mostrarCatalogo() const;
     void mostrarDisponibles() const;
     void mostrarPrestados() const;
     void agregarLibro(const Libro&);
-    void eliminarLibro(int);
+    void eliminarLibroPorISBN(const std::string&);
 };
