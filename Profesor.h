@@ -1,4 +1,3 @@
-// Profesor.h
 #pragma once
 #include "Usuario.h"
 #include "Catalogo.h"

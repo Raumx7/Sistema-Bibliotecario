@@ -14,6 +14,7 @@ private:
 public:
     // Constructores
     Libro();
+    Libro(const std::string&, const std::string&, bool);
     Libro(const std::string&, const std::string&, const std::string&, bool);
 
     // Getters

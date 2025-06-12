@@ -25,14 +25,14 @@ int Profesor::getCantidad() const {return cantidadPrestamos;}
 
 // Método para mostrar los préstamos del profesor
 void Profesor::mostrarPrestamos(const Catalogo& cat) const {
-    std::cout << "Usuario: " << nombre << std::endl
-              << "No. empleado: " << numeroEmpleado << " - " << getCategoria() << std::endl;
+    std::cout << "Usuario: " << nombre << " - " << getCategoria() << "\n\n";
 
     if (cantidadPrestamos == 0) {
         std::cout << "El usuario no cuenta con prestamos activos.\n";
         return;
     }
 
+    std::cout << "==================================== PRESTAMOS ACTIVOS =====================================\n\n";
     cat.imprimirEncabezado(false);
     int index = 1;
 
@@ -42,7 +42,6 @@ void Profesor::mostrarPrestamos(const Catalogo& cat) const {
             std::cout << libro->mostrar(index++, false);
         }
     }
-    std::cout << "Prestamos activos: " << cantidadPrestamos << std::endl;
 }
 
 // Método para saber si ya tiene prestado un libro
@@ -81,8 +80,9 @@ void Profesor::registrarPrestamo(const std::string &isbn, Catalogo &cat) {
 
     if (cat.marcarPrestado(isbn)) {
         prestamos[cantidadPrestamos++] = isbn;
-        std::cout << "Prestamo registrado con exito." << "\n"
-                    << "Libro: " << "\"" << libro->getTitulo() << "\"\n"
+        std::cout << "\nPrestamo registrado con exito" << "\n\n"
+                    << "Usuario: " << nombre << " - " << getCategoria() << "\n"
+                    << "Libro: " << libro->getTitulo() << "\n"
                     << "Autor: " << libro->getAutor() << "\n";
     }
 }
@@ -127,9 +127,10 @@ void Profesor::removerPrestamo(const std::string &isbn, Catalogo &cat) {
             prestamos[j] = prestamos[j + 1];
         }
         --cantidadPrestamos;
-        std::cout << "Libro devuelto con exito:" << "\n"
-                    << "Libro: " << "\"" << libro->getTitulo() << "\"\n"
-                    << "Autor: " << libro->getAutor() << "\n";
+        std::cout << "\nLibro devuelto con exito\n\n"
+        << "Usuario: " << nombre << " - " << getCategoria() << "\n"
+        << "Libro: " << libro->getTitulo() << "\n"
+        << "Autor: " << libro->getAutor() << "\n";
     } else {
         std::cout << "Ocurrio un error al intentar devolver el libro. Intenta nuevamente." << std::endl;
     }
@@ -138,7 +139,7 @@ void Profesor::removerPrestamo(const std::string &isbn, Catalogo &cat) {
 // Perfil detallado
 std::string Profesor::mostrarPerfil() const {
     std::ostringstream oss;
-    oss << "Nombre: " << nombre << "\n"
+    oss << "Nombre: " << nombre << " - " << getCategoria() << "\n"
         << "Email: " << email << "\n"
         << "Fecha de registro: " << fechaRegistro << "\n"
         << "Número de empleado: " << numeroEmpleado << "\n"

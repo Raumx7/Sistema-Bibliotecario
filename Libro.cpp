@@ -10,14 +10,24 @@ std::string Libro::generarISBN() {
     std::uniform_int_distribution<> dis(0, 9);
 
     std::ostringstream oss;
-    for (int i = 0; i < 13; ++i) {
+    oss << "978";  // Prefijo fijo
+
+    // Generar los 10 dígitos restantes aleatoriamente
+    for (int i = 0; i < 10; ++i) {
         oss << dis(gen);
     }
-    return oss.str();
+
+    return oss.str();  // Total: 13 caracteres
 }
 
 // Constructor sin parámetros
 Libro::Libro() : Libro{"N/A","N/A","0000000000",false} {}
+
+// Constructor con parámetros (inicializa isbn)
+Libro::Libro(const std::string &t, const std::string &a, bool d)
+    : titulo{t}, autor{a}, disponible{d}{
+        isbn = generarISBN();
+}
 
 // Constructor con parámetros
 Libro::Libro(const std::string &t, const std::string &a, const std::string &i, bool d)
@@ -50,7 +60,7 @@ void Libro::marcarPrestado() { disponible = false; }
 // Información detallada
 std::string Libro::mostrar() const {
     std::ostringstream oss;
-    oss << "Título: " << titulo << "\n"
+    oss << "Titulo: " << titulo << "\n"
         << "Autor: " << autor << "\n"
         << "ISBN: " << isbn << "\n"
         << "Disponible: " << (disponible ? "Si" : "No") << "\n";

@@ -5,14 +5,14 @@
 // Constructor
 Biblioteca::Biblioteca() : cantidadUsuarios{0} {
     // Estudiantes
-    usuarios[cantidadUsuarios++] = new Estudiante("Ana López", "ana@correo.com", "12/03/2022", "Al1001");
-    usuarios[cantidadUsuarios++] = new Estudiante("Luis Pérez", "luis@correo.com", "15/04/2022", "Al1002");
-    usuarios[cantidadUsuarios++] = new Estudiante("Marta Gómez", "marta@correo.com", "18/05/2022", "Al1003");
-    usuarios[cantidadUsuarios++] = new Estudiante("Pedro Sánchez", "pedro@correo.com", "20/06/2022", "Al1004");
-    usuarios[cantidadUsuarios++] = new Estudiante("Lucía Torres", "lucia@correo.com", "22/07/2022", "Al1005");
+    usuarios[cantidadUsuarios++] = new Estudiante("Ana Lopez", "ana@correo.com", "12/03/2022", "Al1001");
+    usuarios[cantidadUsuarios++] = new Estudiante("Luis Perez", "luis@correo.com", "15/04/2022", "Al1002");
+    usuarios[cantidadUsuarios++] = new Estudiante("Marta Gomez", "marta@correo.com", "18/05/2022", "Al1003");
+    usuarios[cantidadUsuarios++] = new Estudiante("Pedro Sanchez", "pedro@correo.com", "20/06/2022", "Al1004");
+    usuarios[cantidadUsuarios++] = new Estudiante("Lucia Torres", "lucia@correo.com", "22/07/2022", "Al1005");
 
     // Profesores
-    usuarios[cantidadUsuarios++] = new Profesor("Javier Morales", "javier@edu.mx", "10/01/2020", "PR2001");
+    usuarios[cantidadUsuarios++] = new Profesor("Javier Montoya", "javier@edu.mx", "10/01/2020", "PR2001");
     usuarios[cantidadUsuarios++] = new Profesor("Carmen Ruiz", "carmen@edu.mx", "14/02/2020", "PR2002");
 }
 
@@ -27,7 +27,7 @@ Biblioteca::~Biblioteca() {
 void Biblioteca::imprimirEncabezadoUsuarios(bool mostrarCategoria) const {
     std::cout << std::left
               << std::setw(6)  << "N°"
-              << std::setw(25) << "Nombre"
+              << std::setw(24) << "Nombre"
               << std::setw(30) << "Email"
               << std::setw(15) << "Registro"
               << std::setw(10) << "ID"
@@ -39,7 +39,7 @@ void Biblioteca::imprimirEncabezadoUsuarios(bool mostrarCategoria) const {
 
     std::cout << "\n";
 
-    int ancho = 94 + (mostrarCategoria ? 15 : 0);
+    int ancho = 93 + (mostrarCategoria ? 15 : 0);
     std::cout << std::string(ancho, '-') << "\n";
 }
 
@@ -80,7 +80,7 @@ void Biblioteca::eliminarUsuarioPorID(const std::string& id) {
 
 // Muestra usuarios (profesores y estudiantes)
 void Biblioteca::mostrarUsuarios() const {
-    std::cout << "Usuarios:\n\n";
+    std::cout << "================================================ USUARIOS ==================================================\n\n";
     imprimirEncabezadoUsuarios(true);
     for (int i = 0; i < cantidadUsuarios; ++i) {
         std::cout << usuarios[i]->mostrarPerfil(i + 1) << "\n";
@@ -89,7 +89,7 @@ void Biblioteca::mostrarUsuarios() const {
 
 // Muestra perfil de estudiantes
 void Biblioteca::mostrarEstudiantes() const {
-    std::cout << "\nEstudiantes:\n\n";
+    std::cout << "======================================= ESTUDIANTES =========================================\n\n";
     imprimirEncabezadoUsuarios(false);
     int index = 1;
     for (int i = 0; i < cantidadUsuarios; ++i) {
@@ -108,14 +108,14 @@ void Biblioteca::mostrarEstudiantes() const {
 
 // Muestra perfil de profesores
 void Biblioteca::mostrarProfesores() const {
-    std::cout << "\nProfesores:\n\n";
+    std::cout << "======================================== PROFESORES =========================================\n\n";
     imprimirEncabezadoUsuarios(false);
     int index = 1;
     for (int i = 0; i < cantidadUsuarios; ++i) {
         if (usuarios[i]->getCategoria() == "Profesor") {
             std::cout << std::left
                       << std::setw(5)  << index++
-                      << std::setw(25) << usuarios[i]->getNombre()
+                      << std::setw(24) << usuarios[i]->getNombre()
                       << std::setw(30) << usuarios[i]->getEmail()
                       << std::setw(15) << usuarios[i]->getFechaRegistro()
                       << std::setw(14) << usuarios[i]->getID()

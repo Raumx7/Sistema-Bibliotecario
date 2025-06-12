@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
+// Constructor de catálogo, crea por default 10 libros
 Catalogo::Catalogo() : cantidad{0} {
     libros[cantidad++] = Libro("Cien anios de soledad", "Gabriel Garcia Marquez", "9780307474728", true);
     libros[cantidad++] = Libro("1984", "George Orwell", "9780451524935", true);
@@ -15,6 +16,7 @@ Catalogo::Catalogo() : cantidad{0} {
     libros[cantidad++] = Libro("Fahrenheit 451", "Ray Bradbury", "9781451673319", true);
 }
 
+// Imprime encabezadp para libros, con opción de mostrar la disponibilidad
 void Catalogo::imprimirEncabezado(bool disponibilidad) const {
     std::cout << std::left
               << std::setw(6) << "N°"
@@ -32,6 +34,7 @@ void Catalogo::imprimirEncabezado(bool disponibilidad) const {
     std::cout << std::string(anchoTotal, '-') << "\n";
 }
 
+// Método que marca disponible un libro
 bool Catalogo::marcarDisponible(const std::string &isbn) {
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].getISBN() == isbn && !libros[i].estaDisponible()) {
@@ -42,6 +45,7 @@ bool Catalogo::marcarDisponible(const std::string &isbn) {
     return false;
 }
 
+// Método que marca prestado un libro
 bool Catalogo::marcarPrestado(const std::string &isbn) {
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].getISBN() == isbn && libros[i].estaDisponible()) {
@@ -52,12 +56,13 @@ bool Catalogo::marcarPrestado(const std::string &isbn) {
     return false;
 }
 
+// Método que busca libros por título
 void Catalogo::buscarPorTitulo(const std::string &tituloBuscado) const {
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].getTitulo() == tituloBuscado) {
-            std::cout << std::string{30,'-'};
+            std::cout << std::string(25,'-') << std::endl;
             std::cout << libros[i].mostrar();
             encontrado = true;
         }
@@ -67,12 +72,13 @@ void Catalogo::buscarPorTitulo(const std::string &tituloBuscado) const {
         std::cout << "No se encontro ningun libro con ese titulo.\n";
 }
 
-void Catalogo::buscarPorAutor(const std::string& autorBuscado) const {
+// Método que busca libros por autor
+void Catalogo::buscarPorAutor(const std::string &autorBuscado) const {
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].getAutor() == autorBuscado) {
-            std::cout << std::string{30,'-'};
+            std::cout << std::string(25,'-') << std::endl;
             std::cout << libros[i].mostrar();
             encontrado = true;
         }
@@ -82,13 +88,13 @@ void Catalogo::buscarPorAutor(const std::string& autorBuscado) const {
         std::cout << "No se encontro ningun libro de ese autor.\n";
 }
 
+// Método que busca un libro por ISBN
 void Catalogo::buscarPorISBN(const std::string &isbn) const {
     bool encontrado = false;
 
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].getISBN() == isbn) {
-            std::cout << std::string{30,'-'};
-            std::cout << libros[i].mostrar();
+            std::cout << std::endl << libros[i].mostrar();
             encontrado = true;
             break;
         }
@@ -98,7 +104,8 @@ void Catalogo::buscarPorISBN(const std::string &isbn) const {
         std::cout << "No se encontro ningun libro con ISBN: " << isbn << std::endl;
 }
 
-const Libro* Catalogo::buscarLibroPorISBN(const std::string& isbn) const {
+// Método que busca un libro por ISBN (devuelve la dirección de memoria del libro en catálogo)
+const Libro* Catalogo::buscarLibroPorISBN(const std::string &isbn) const {
     for (int i = 0; i < cantidad; ++i) {
         if (libros[i].getISBN() == isbn) {
             return &libros[i];
@@ -107,8 +114,9 @@ const Libro* Catalogo::buscarLibroPorISBN(const std::string& isbn) const {
     return nullptr;
 }
 
+// Método que muestra libros disponibles
 void Catalogo::mostrarDisponibles() const {
-    std::cout << "\nLibros disponibles:\n\n";
+    std::cout << "==================================== LIBROS DISPONIBLES ====================================\n\n";
     imprimirEncabezado(false);
     int index = 1;
     for (int i = 0; i < cantidad; ++i) {
@@ -118,8 +126,9 @@ void Catalogo::mostrarDisponibles() const {
     }
 }
 
+// Método que muestra libros prestados
 void Catalogo::mostrarPrestados() const {
-    std::cout << "\nLibros en prestamo:\n\n";
+    std::cout << "==================================== LIBROS EN PRESTAMO ====================================\n\n";
     imprimirEncabezado(false);
     int index = 1;
     for (int i = 0; i < cantidad; ++i) {
@@ -129,22 +138,28 @@ void Catalogo::mostrarPrestados() const {
     }
 }
 
+// Método que muestra todos los libros
 void Catalogo::mostrarCatalogo() const {
-    std::cout << "\nCatalogo:\n\n";
+    std::cout << "================================================ CATALOGO ===================================================\n\n";
     imprimirEncabezado(true);
     for (int i = 0; i < cantidad; ++i) {
         std::cout << libros[i].mostrar(i + 1, true);
     }
 }
 
+// Método que agrega libros al catálogo
 void Catalogo::agregarLibro(const Libro& libro) {
     if (cantidad < 1000) {
         libros[cantidad++] = libro;
+        std::cout << "Libro agregado con exito" << std::endl;
+        std::cout << "ISBN asignado: " << libro.getISBN() << std::endl;
+
     } else {
-        std::cout << "No se pueden agregar mas libros. Catalogo lleno." << std::endl;
+        std::cout << "No se pueden agregar mas libros. Catalogo lleno.";
     }
 }
 
+// Método para eliminar libros por ISBN
 void Catalogo::eliminarLibroPorISBN(const std::string& isbn) {
     int index = -1;
 
@@ -161,10 +176,15 @@ void Catalogo::eliminarLibroPorISBN(const std::string& isbn) {
     }
 
     std::string tituloEliminado = libros[index].getTitulo();
+    std::string autirEliminado = libros[index].getAutor();
 
     for (int i = index; i < cantidad - 1; ++i) {
         libros[i] = libros[i + 1];
     }
     --cantidad;
-    std::cout << "El libro \"" << tituloEliminado << "\" se ha eliminado del catálogo.\n";
+
+    std::cout << "\n";
+    std::cout << "Titulo: " << tituloEliminado << std::endl;
+    std::cout << "Autor: " << autirEliminado << std::endl;
+    std::cout << "\nLibro eliminado del catalogo\n";
 }
