@@ -33,7 +33,10 @@ El programa permite las siguientes operaciones desde una interfaz en consola:
 ```bash
 g++ Usuario.cpp Profesor.cpp Estudiante.cpp Libro.cpp Catalogo.cpp Biblioteca.cpp main.cpp -o output/main
 ./output/main
+```
 
+### En Windows (con g++ instalado)
+```bash
 g++ Usuario.cpp Profesor.cpp Estudiante.cpp Libro.cpp Catalogo.cpp Biblioteca.cpp main.cpp -o output.exe
 output.exe
-'''
+```
