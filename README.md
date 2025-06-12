@@ -37,6 +37,5 @@ g++ Usuario.cpp Profesor.cpp Estudiante.cpp Libro.cpp Catalogo.cpp Biblioteca.cp
 
 ### En Windows (con g++ instalado)
 ```bash
-g++ Usuario.cpp Profesor.cpp Estudiante.cpp Libro.cpp Catalogo.cpp Biblioteca.cpp main.cpp -o output.exe
-output.exe
+g++ Usuario.cpp Profesor.cpp Estudiante.cpp Libro.cpp Catalogo.cpp Biblioteca.cpp main.cpp -o biblio.exe
 ```

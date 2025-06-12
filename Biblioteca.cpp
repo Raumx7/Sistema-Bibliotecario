@@ -96,7 +96,7 @@ void Biblioteca::mostrarEstudiantes() const {
         if (usuarios[i]->getCategoria() == "Estudiante") {
             std::cout << std::left
                       << std::setw(5)  << index++
-                      << std::setw(25) << usuarios[i]->getNombre()
+                      << std::setw(24) << usuarios[i]->getNombre()
                       << std::setw(30) << usuarios[i]->getEmail()
                       << std::setw(15) << usuarios[i]->getFechaRegistro()
                       << std::setw(14) << usuarios[i]->getID()

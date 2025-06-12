@@ -152,7 +152,7 @@ std::string Estudiante::mostrarPerfil(int indice) const {
     std::ostringstream oss;
     oss << std::left
         << std::setw(5)  << indice
-        << std::setw(25) << nombre
+        << std::setw(24) << nombre
         << std::setw(30) << email
         << std::setw(15) << fechaRegistro
         << std::setw(14) << matricula
